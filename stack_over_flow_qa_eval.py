@@ -136,6 +136,22 @@ class Evaluator:
         logger.info(f'Loading weights: {path}weights_epoch_{suffix}.h5')
         self.model.load_weights(f'{path}weights_epoch_{suffix}.h5')
 
+    def load_best_json(self, name = None):
+        path = 'models/weights/json/'
+        suffix = self.name if name is None else name
+        suffix += '_best'
+        assert os.path.exists(f'{path}config_{suffix}.json'), f'Weights at epoch {suffix} not found'
+
+        logger.info(f'Loading best val loss config json: {path}config_{suffix}.json')
+        self.model.load_json(f'{path}config_{suffix}.json')
+
+    def load_best_epoch(self, name):
+        path = 'models/weights/'
+        suffix = name + '_best'
+        assert os.path.exists(f'{path}weights_epoch_{suffix}.h5'), f'Weights at epoch {suffix} not found'
+        logger.info(f'Loading best val loss weights: {path}weights_epoch_{suffix}.h5')
+        self.model.load_weights(f'{path}weights_epoch_{suffix}.h5')
+
     ##### Converting / reverting #####
 
     def convert(self, words):
@@ -196,12 +212,47 @@ class Evaluator:
 
             logger.info(f'Top1 Description: {top1_desc}')
             logger.info(f'MRR Description: {mrr_desc}')
+        elif mode == 'evaluate-best':
+            self.load_best_json()
+            results = self.evaluate_best(verbose=True)
+
+            # results:
+
+            logger.info(f'model_best_val_loss final_results: {results}')
+
+            df = pd.DataFrame(results)
+            top1_desc = df.describe()['top1']
+            mrr_desc = df.describe()['mrr']
+
+            # save histogram plot
+            report = ReportResult({'positions': np.append([], results['positions'])},
+                                  index=[i for i in range(1, len(np.append([], results['positions'])) + 1)],
+                                  plot_name=f'histogram_{self.name}')
+            report.generate_histogram()
+            report.save_plot()
+
+            logger.info(f'Top1 Description: {top1_desc}')
+            logger.info(f'MRR Description: {mrr_desc}')
         elif mode == 'save_config':
             self.save_json()
 
     def evaluate(self, X = None, name = None, verbose=False):
         name = self.name if name is None else name
         self.load_epoch(name)
+        data = self.eval_data if X is None else X
+        results = {'top1': [], 'mrr': [], 'positions': []}
+        logger.info('Evaluating...')
+        for i in range(0, 20):
+            top1, mrr, positions = self.get_score(data, verbose=verbose)
+            results['top1'].append(top1)
+            results['mrr'].append(mrr)
+            results['positions'].append(positions)
+            logger.info(f'Iteration: {i}: Top-1 Precision {top1}, MRR {mrr}, Positions: {positions}')
+        return results
+
+    def evaluate_best(self, X = None, name = None, verbose=False):
+        name = self.name if name is None else name
+        self.load_best_epoch(name)
         data = self.eval_data if X is None else X
         results = {'top1': [], 'mrr': [], 'positions': []}
         logger.info('Evaluating...')
@@ -362,7 +413,7 @@ class Evaluator:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='run question answer selection')
     parser.add_argument('--conf_file', metavar='CONF_FILE', type=str, default="stack_over_flow_conf.json", help='conf json file: stack_over_flow_conf.json')
-    parser.add_argument('--mode', metavar='MODE', type=str, default="train", help='mode: train|evaluate|save_config')
+    parser.add_argument('--mode', metavar='MODE', type=str, default="train", help='mode: train|evaluate|evaluate-best|save_config')
     parser.add_argument('--conf_name', metavar='CONF_NAME', type=str, default=None, help='conf_name: part of name of weights file')
     parser.add_argument('--model', metavar='MODEL', type=str, default='cnn-lstm',
                         help='model name: embedding|cnn|cnn-lstm|rnn-attention')
