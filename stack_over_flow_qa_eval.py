@@ -238,9 +238,9 @@ class Evaluator:
         best_val_loss = 10 # positive number, as long val_loss is decimal
         val_loss_without_improve = 0
         nb_epoch = 5
-        patience = nb_epoch / 10 # 10% of number of epochs
+        patience = nb_epoch / 20 # 5% of number of epochs
         patience = 1
-        
+
         for i in range(1, nb_epoch + 1):
 
             bad_answers = self.pada(random.sample(self.answers, len(good_answers)))
