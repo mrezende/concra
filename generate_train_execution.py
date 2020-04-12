@@ -92,6 +92,47 @@ def generate_evaluate_commands(dict):
         print(git_command)
 
 
+def generate_evaluate_best_val_loss_commands(dict):
+    execution_command = ''
+    git_command = ''
+
+    if "margin" in dict:
+        margin = str(dict["margin"]).replace('.', '')
+        execution_command = f'!python3 stack_over_flow_qa_eval.py --model {dict["model"]} --mode evaluate-best ' \
+                            f'--conf_file conf/stack_over_flow_conf_f_{dict["filters"]}_k_{dict["kernel_size"]}_m_{margin}.json' \
+                            f' &> output/evaluation/best/{dict["model"]}-{dict["filters"]}-k-{dict["kernel_size"]}-m-{margin}-out.txt'
+        git_command = '!git status\n' \
+                      '!git pull origin master\n' \
+                      '!git add -A\n' \
+                      f'!git commit -am "push evaluation best val loss {dict["model"]}-{dict["filters"]}-k-{dict["kernel_size"]}-m-{margin} results to github"\n' \
+                      '!git push origin master\n'
+    elif "kernel_size" in dict:
+        execution_command = f'!python3 stack_over_flow_qa_eval.py --model {dict["model"]} --mode evaluate-best ' \
+                            f'--conf_file conf/stack_over_flow_conf_f_{dict["filters"]}_k_{dict["kernel_size"]}.json' \
+                            f' &> output/evaluation/best/{dict["model"]}-{dict["filters"]}-k-{dict["kernel_size"]}-out.txt'
+
+        git_command = '!git status\n' \
+                      '!git pull origin master\n' \
+                      '!git add -A\n' \
+                      f'!git commit -am "push evaluation best val loss {dict["model"]}-{dict["filters"]}-k-{dict["kernel_size"]} results to github"\n' \
+                      '!git push origin master\n'
+    else:
+        execution_command = f'!python3 stack_over_flow_qa_eval.py --model {dict["model"]} --mode evaluate-best ' \
+                            f'--conf_file conf/stack_over_flow_conf_f_{dict["filters"]}.json' \
+                            f' &> output/evaluation/best/{dict["model"]}-{dict["filters"]}-out.txt'
+        git_command = '!git status\n' \
+                      '!git pull origin master\n' \
+                      '!git add -A\n' \
+                      f'!git commit -am "push evaluation best val loss {dict["model"]}-{dict["filters"]} results to github"\n' \
+                      '!git push origin master\n'
+
+
+    if len(execution_command) > 0:
+        print(execution_command)
+        print()
+        print(git_command)        
+
+
 embeddings = [{'model': 'embedding', 'filters': 4000, 'kernel_size': 2},
         {'model': 'embedding', 'filters': 4000, 'kernel_size': 2, 'margin': 0.05},
         {'model': 'embedding', 'filters': 4000, 'kernel_size': 2, 'margin': 0.1},
@@ -199,7 +240,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='generate train execution')
 
     parser.add_argument('--mode', metavar='mode', type=str, default='training',
-                        help='--mode <training|evaluate>')
+                        help='--mode <training|evaluate|evaluate-best>')
 
 
     args = parser.parse_args()
@@ -259,6 +300,34 @@ if __name__ == '__main__':
         print('--------- attentions-with-bn --------------')
         for attention_with_bn in attentions_with_bn:
             generate_evaluate_commands(attention_with_bn)
+    elif mode == 'evaluate-best':
+        print('--------- cnn --------------')
+        for cnn in cnns:
+            generate_evaluate_best_val_loss_commands(cnn)
+
+        print('--------- shared-cnn --------------')
+        for cnn in shared_cnns:
+            generate_evaluate_best_val_loss_commands(cnn)
+
+        print('--------- cnn with bn --------------')
+        for cnn in cnns_with_bn:
+            generate_evaluate_best_val_loss_commands(cnn)
+
+        print('--------- shared-cnn with bn --------------')
+        for cnn in shared_cnns_with_bn:
+            generate_evaluate_best_val_loss_commands(cnn)
+
+        print('--------- embedding --------------')
+        for embedding in embeddings:
+            generate_evaluate_best_val_loss_commands(embedding)
+
+        print('--------- attention --------------')
+        for attention in attentions:
+            generate_evaluate_best_val_loss_commands(attention)
+
+        print('--------- attentions-with-bn --------------')
+        for attention_with_bn in attentions_with_bn:
+            generate_evaluate_best_val_loss_commands(attention_with_bn)
     else:
         parser.print_help()
         sys.exit()
