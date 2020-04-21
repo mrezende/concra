@@ -121,10 +121,12 @@ class AttentionLayerWithBatchNormalization(Layer):
             mask = K.log(mask)
             attention_weights += mask
 
+        
+        attention_weights = K.softmax(attention_weights, axis=1)  # (batch, input_length, 1)
+
         # batch normalization
         attention_weights = BatchNormalization()(attention_weights)
 
-        attention_weights = K.softmax(attention_weights, axis=1)  # (batch, input_length, 1)
         result = K.sum(actual_input * attention_weights, axis=1)  # (batch, input_length)  [multiplication uses broadcast]
         return result
 
