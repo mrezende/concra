@@ -154,7 +154,7 @@ class EmbeddingModel(LanguageModel):
         question_pool = maxpool(question_embedding)
         answer_pool = maxpool(answer_embedding)
         
-        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axis=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
 
@@ -225,7 +225,7 @@ class SharedConvolutionModel(LanguageModel):
         question_pool = maxpool(question_cnn)
         answer_pool = maxpool(answer_cnn)
 
-        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axis=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
         
@@ -312,7 +312,7 @@ class SharedConvolutionModelWithBatchNormalization(LanguageModel):
         question_pool = maxpool(question_cnn)
         answer_pool = maxpool(answer_cnn)
 
-        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axis=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
 
@@ -393,7 +393,7 @@ class ConvolutionModel(LanguageModel):
         question_pool = maxpool(question_cnn)
         answer_pool = maxpool(answer_cnn)
 
-        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axis=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
 
@@ -492,7 +492,7 @@ class ConvolutionModelWithBatchNormalization(LanguageModel):
 
         
 
-        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axis=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
 
@@ -549,7 +549,7 @@ class ConvolutionalLSTM(LanguageModel):
         question_pool = maxpool(question_cnn)
         answer_pool = maxpool(answer_cnn)
 
-        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axis=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
 
@@ -585,7 +585,7 @@ class UnifModel(LanguageModel):
         f_attention_layer = AttentionLayer(name='attention')
         e_c = f_attention_layer([answer_embedding])
         
-        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axis=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([e_q,
                                                                                                e_c])
 
@@ -622,7 +622,7 @@ class UnifModelWithBatchNormalization(LanguageModel):
 
         
 
-        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axis=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([e_q,
                                                                                                e_c])
 
