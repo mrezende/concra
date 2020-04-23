@@ -227,7 +227,7 @@ class Evaluator:
             # save histogram plot
             report = ReportResult({'positions': np.append([], results['positions'])},
                                   index=[i for i in range(1, len(np.append([], results['positions'])) + 1)],
-                                  plot_name=f'histogram_{self.name}')
+                                  plot_name=f'histogram_best_{self.name}')
             report.generate_histogram()
             report.save_plot()
 
