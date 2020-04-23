@@ -27,7 +27,7 @@ def get_decimal(line):
 
 results = []
 model_name_regx = re.compile('((([a-z]{2,9}-)+)([0-9]{2,4}))-(k-[0-9])?-?(m-[0-9]{2,3})?-?out\.txt')
-mypath = 'output/evaluation/'
+mypath = 'output/evaluation/best/'
 filenames = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
 top1_line = 'Top1 Description'

@@ -14,7 +14,7 @@ from tensorflow.keras.layers import BatchNormalization, Activation
 from tensorflow.keras import backend as K
 from tensorflow.keras.models import Model, model_from_json
 from tensorflow.keras.utils import plot_model
-from tensorflow.keras.losses import CosineSimilarity
+from tensorflow.keras.losses import cosine_similarity
 from tensorflow.keras.optimizers import Adam
 from attention_unif import AttentionLayer, AttentionLayerWithBatchNormalization
 from average_unif import AverageLayer
@@ -154,14 +154,11 @@ class EmbeddingModel(LanguageModel):
         question_pool = maxpool(question_embedding)
         answer_pool = maxpool(answer_embedding)
         
-        cosine_similarity = Lambda(lambda x: K.batch_dot(x[0], x[1], axes=1) /
-                                                 K.maximum(K.sqrt(K.batch_dot(x[0], x[0], axes=1) *
-                                                                  K.batch_dot(x[1], x[1], axes=1)),
-                                                           K.epsilon())
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
 
-        return Model(inputs=[question, answer], outputs=cosine_similarity,
+        return Model(inputs=[question, answer], outputs=cos_similarity,
                                    name='qa_model')
 
 
@@ -228,14 +225,12 @@ class SharedConvolutionModel(LanguageModel):
         question_pool = maxpool(question_cnn)
         answer_pool = maxpool(answer_cnn)
 
-        cosine_similarity = Lambda(lambda x: K.batch_dot(x[0], x[1], axes=1) /
-                                                 K.maximum(K.sqrt(K.batch_dot(x[0], x[0], axes=1) *
-                                                                  K.batch_dot(x[1], x[1], axes=1)),
-                                                           K.epsilon())
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
+        
 
-        return Model(inputs=[question, answer], outputs=cosine_similarity,
+        return Model(inputs=[question, answer], outputs=cos_similarity,
                                    name='qa_model')
 
 
@@ -317,14 +312,13 @@ class SharedConvolutionModelWithBatchNormalization(LanguageModel):
         question_pool = maxpool(question_cnn)
         answer_pool = maxpool(answer_cnn)
 
-        cosine_similarity = Lambda(lambda x: K.batch_dot(x[0], x[1], axes=1) /
-                                                 K.maximum(K.sqrt(K.batch_dot(x[0], x[0], axes=1) *
-                                                                  K.batch_dot(x[1], x[1], axes=1)),
-                                                           K.epsilon())
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
 
-        return Model(inputs=[question, answer], outputs=cosine_similarity,
+        
+
+        return Model(inputs=[question, answer], outputs=cos_similarity,
                                    name='qa_model')
 
 
@@ -399,14 +393,11 @@ class ConvolutionModel(LanguageModel):
         question_pool = maxpool(question_cnn)
         answer_pool = maxpool(answer_cnn)
 
-        cosine_similarity = Lambda(lambda x: K.batch_dot(x[0], x[1], axes=1) /
-                                                 K.maximum(K.sqrt(K.batch_dot(x[0], x[0], axes=1) *
-                                                                  K.batch_dot(x[1], x[1], axes=1)),
-                                                           K.epsilon())
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
 
-        return Model(inputs=[question, answer], outputs=cosine_similarity,
+        return Model(inputs=[question, answer], outputs=cos_similarity,
                                    name='qa_model')
 
 class ConvolutionModelWithBatchNormalization(LanguageModel):
@@ -499,14 +490,13 @@ class ConvolutionModelWithBatchNormalization(LanguageModel):
         question_pool = maxpool(question_cnn)
         answer_pool = maxpool(answer_cnn)
 
-        cosine_similarity = Lambda(lambda x: K.batch_dot(x[0], x[1], axes=1) /
-                                                 K.maximum(K.sqrt(K.batch_dot(x[0], x[0], axes=1) *
-                                                                  K.batch_dot(x[1], x[1], axes=1)),
-                                                           K.epsilon())
+        
+
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
 
-        return Model(inputs=[question, answer], outputs=cosine_similarity,
+        return Model(inputs=[question, answer], outputs=cos_similarity,
                                    name='qa_model')
 
 
@@ -559,14 +549,11 @@ class ConvolutionalLSTM(LanguageModel):
         question_pool = maxpool(question_cnn)
         answer_pool = maxpool(answer_cnn)
 
-        cosine_similarity = Lambda(lambda x: K.batch_dot(x[0], x[1], axes=1) /
-                                                 K.maximum(K.sqrt(K.batch_dot(x[0], x[0], axes=1) *
-                                                                  K.batch_dot(x[1], x[1], axes=1)),
-                                                           K.epsilon())
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([question_pool,
                                                                                                answer_pool])
 
-        return Model(inputs=[question, answer], outputs=cosine_similarity,
+        return Model(inputs=[question, answer], outputs=cos_similarity,
                                    name='qa_model')
 
 
@@ -598,14 +585,11 @@ class UnifModel(LanguageModel):
         f_attention_layer = AttentionLayer(name='attention')
         e_c = f_attention_layer([answer_embedding])
         
-        cosine_similarity = Lambda(lambda x: K.batch_dot(x[0], x[1], axes=1) /
-                                                 K.maximum(K.sqrt(K.batch_dot(x[0], x[0], axes=1) *
-                                                                  K.batch_dot(x[1], x[1], axes=1)),
-                                                           K.epsilon())
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
                                        , output_shape=lambda _: (None, 1), name='similarity')([e_q,
                                                                                                e_c])
 
-        return Model(inputs=[question, answer], outputs=cosine_similarity,
+        return Model(inputs=[question, answer], outputs=cos_similarity,
                                    name='qa_model')
 
 class UnifModelWithBatchNormalization(LanguageModel):
@@ -636,12 +620,11 @@ class UnifModelWithBatchNormalization(LanguageModel):
         f_attention_layer = AttentionLayerWithBatchNormalization(name='attention-with-bn')
         e_c = f_attention_layer([answer_embedding])
 
-        cosine_similarity = Lambda(lambda x: K.batch_dot(x[0], x[1], axes=1) /
-                                             K.maximum(K.sqrt(K.batch_dot(x[0], x[0], axes=1) *
-                                                              K.batch_dot(x[1], x[1], axes=1)),
-                                                       K.epsilon())
-                                   , output_shape=lambda _: (None, 1), name='similarity')([e_q,
-                                                                                           e_c])
+        
 
-        return Model(inputs=[question, answer], outputs=cosine_similarity,
+        cos_similarity = Lambda(lambda x: cosine_similarity(x[0], x[1], axes=1)
+                                       , output_shape=lambda _: (None, 1), name='similarity')([e_q,
+                                                                                               e_c])
+
+        return Model(inputs=[question, answer], outputs=cos_similarity,
                      name='qa_model')
