@@ -233,6 +233,40 @@ class Evaluator:
 
             logger.info(f'Top1 Description: {top1_desc}')
             logger.info(f'MRR Description: {mrr_desc}')
+        elif mode == 'evaluate-code-by-length':
+            self.load_json()
+
+
+            filenames = ['eval_15.json', 'eval_25.json', 'eval_35.json', 'eval_50.json', 
+            'eval_75.json', 'eval_100.json', 'eval_larger_100.json']
+
+
+            for filename in filenames:
+                X = self.load(filename)
+
+                results = self.evaluate(X=X, verbose=True)
+
+                # results:
+
+                logger.info(f'----------- eval: {filename} ------------')
+
+                logger.info(f'{filename} final_results: {results}')
+
+                df = pd.DataFrame(results)
+                top1_desc = df.describe()['top1']
+                mrr_desc = df.describe()['mrr']
+
+                # save histogram plot
+                report = ReportResult({'positions': np.append([], results['positions'])},
+                                      index=[i for i in range(1, len(np.append([], results['positions'])) + 1)],
+                                      plot_name=f'histogram_best_{self.name}')
+                report.generate_histogram()
+                report.save_plot()
+
+                logger.info(f'Top1 Description: {top1_desc}')
+                logger.info(f'MRR Description: {mrr_desc}')
+
+
         elif mode == 'save_config':
             self.save_json()
 
@@ -413,7 +447,7 @@ class Evaluator:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='run question answer selection')
     parser.add_argument('--conf_file', metavar='CONF_FILE', type=str, default="stack_over_flow_conf.json", help='conf json file: stack_over_flow_conf.json')
-    parser.add_argument('--mode', metavar='MODE', type=str, default="train", help='mode: train|evaluate|evaluate-best|save_config')
+    parser.add_argument('--mode', metavar='MODE', type=str, default="train", help='mode: train|evaluate|evaluate-best|evaluate-code-by-length|save_config')
     parser.add_argument('--conf_name', metavar='CONF_NAME', type=str, default=None, help='conf_name: part of name of weights file')
     parser.add_argument('--model', metavar='MODEL', type=str, default='cnn-lstm',
                         help='model name: embedding|cnn|cnn-lstm|rnn-attention')
