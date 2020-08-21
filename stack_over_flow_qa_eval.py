@@ -423,6 +423,19 @@ class Evaluator:
                 logger.info('Worst: ({})'.format(sims[min_r]) + ' '.join(self.revert(amin_r)))
                 logger.info(' ----- end question ----- ')
 
+                logger.info('------ begin correct answer ----------')
+
+                for good_answer in d['good_answers']:
+                    logger.info(' '.join(self.revert(good_answer)))
+
+                logger.info('------ end correct answer ----------')
+
+                logger.info('------ begin bad answers ----------')
+                for bad_answer in bad_answers:
+                    logger.info(' '.join(self.revert(bad_answer)))
+
+                logger.info('------ end bad answers ----------')
+
             c_1 += 1 if max_r == max_n else 0
             position = r[max_r] - r[max_n] + 1
             c_2 += 1 / float(position)
