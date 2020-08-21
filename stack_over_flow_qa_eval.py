@@ -45,6 +45,7 @@ class Evaluator:
         self.optimizer = self.params['optimizer'] if optimizer is None else optimizer
 
         self.answers = self.load('answers.json') # self.load('generated')
+        self.answers_index = self.load('answers_index.json')
         self.training_data = self.load('training.json')
         self.dev_data = self.load('dev.json')
         self.eval_data = self.load('eval.json')
@@ -432,7 +433,9 @@ class Evaluator:
 
                 logger.info('------ begin bad answers ----------')
                 for bad_answer in bad_answers:
-                    logger.info(' '.join(self.revert(bad_answer)))
+                    question_id = self.find_question_id(bad_answer)
+                    str_bad_answer = str(question_id) + ' '.join(self.revert(bad_answer))
+                    logger.info(str_bad_answer)
 
                 logger.info('------ end bad answers ----------')
 
@@ -448,6 +451,10 @@ class Evaluator:
         logger.info('MRR: %f' % mrr)
 
         return top1, mrr, positions
+    def find_question_id(self, answer):
+        for key, value in self.answers_index.items():
+            if np.array_equal(answer, value):
+                return key
 
     def save_score(self):
         with open('results_conf.txt', 'a+') as append_file:
