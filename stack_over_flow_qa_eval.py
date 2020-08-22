@@ -435,7 +435,7 @@ class Evaluator:
                 logger.info('------ begin bad answers ----------')
                 for sim_index in sims_index_sorted:
                     is_good_answer = False
-                    answer = answers[sim_index]
+                    answer = answers[sim_index][0]
                     print('answer ----: ' + str(answer))
                     for good_answer in d['good_answers']:
                         if np.array_equal(answer, good_answer):
