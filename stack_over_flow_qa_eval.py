@@ -434,6 +434,7 @@ class Evaluator:
                 logger.info('------ end correct answer ----------')
 
                 logger.info('------ begin bad answers ----------')
+                print(sims_index_sorted)
                 for sim_index in sims_index_sorted:
                     is_good_answer = False
                     print(sim_index)
