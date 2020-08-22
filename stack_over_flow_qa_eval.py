@@ -436,12 +436,12 @@ class Evaluator:
                 for sim_index in sims_index_sorted:
                     is_good_answer = False
                     answer = answers[sim_index]
-                    print('answer ----: ' + answer)
+                    print('answer ----: ' + str(answer))
                     for good_answer in d['good_answers']:
                         if np.array_equal(answer, good_answer):
                             is_good_answer = True
                             break
-                    print('is_good_answer----: ' + is_good_answer)
+                    print('is_good_answer----: ' + str(is_good_answer))
                     if is_good_answer == False:
                         question_id = self.find_question_id(answer)
                         answer_index = answers.index(answer)
