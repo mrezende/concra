@@ -400,6 +400,7 @@ class Evaluator:
         for i, d in enumerate(X):
             bad_answers = random.sample(self.answers, 49)
             answers = d['good_answers'] + bad_answers
+            answers_original = answers
             answers = self.pada(answers)
             question = self.padq([d['question']] * len(answers))
 
@@ -435,7 +436,7 @@ class Evaluator:
                 logger.info('------ begin bad answers ----------')
                 for sim_index in sims_index_sorted:
                     is_good_answer = False
-                    answer = answers[sim_index][0]
+                    answer = answers_original[sim_index][0]
                     print('answer ----: ' + str(answer))
                     for good_answer in d['good_answers']:
                         print(good_answer)
@@ -445,7 +446,7 @@ class Evaluator:
                     print('is_good_answer----: ' + str(is_good_answer))
                     if is_good_answer == False:
                         question_id = self.find_question_id(answer)
-                        answer_index = answers.index(answer)
+                        answer_index = answers_original.index(answer)
                         answer_rank = r[answer_index]
                         str_answer = 'Question Id (sof): ' + str(question_id) + ' - Rank: ' + answer_rank + ' - ' + ' '.join(self.revert(answer))
                         logger.info(str_answer)
