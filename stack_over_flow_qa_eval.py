@@ -452,9 +452,9 @@ class Evaluator:
 
         return top1, mrr, positions
     def find_question_id(self, answer):
-        for key, value in self.answers_index.items():
-            if np.array_equal(answer, value):
-                return key
+        index = self.answers.index(answer)
+        question_id = self.answers_index[index]
+        return question_id
 
     def save_score(self):
         with open('results_conf.txt', 'a+') as append_file:
