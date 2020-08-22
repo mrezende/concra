@@ -432,16 +432,21 @@ class Evaluator:
 
                 logger.info('------ end correct answer ----------')
 
-                logger.info('------ begin answers ----------')
+                logger.info('------ begin bad answers ----------')
                 for sim_index in sims_index_sorted:
+                    is_good_answer = False
                     answer = answers[sim_index]
-                    question_id = self.find_question_id(answer)
-                    answer_index = answers.index(answer)
-                    answer_rank = r[answer_index]
-                    str_answer = 'Question Id (sof): ' + str(question_id) + ' - Rank: ' + answer_rank + ' - ' + ' '.join(self.revert(answer))
-                    logger.info(str_answer)
+                    for good_answer in d['good_answers']:
+                        if np.array_equal(answer, good_answer):
+                            is_good_answer = True
+                    if is_good_answer == False:
+                        question_id = self.find_question_id(answer)
+                        answer_index = answers.index(answer)
+                        answer_rank = r[answer_index]
+                        str_answer = 'Question Id (sof): ' + str(question_id) + ' - Rank: ' + answer_rank + ' - ' + ' '.join(self.revert(answer))
+                        logger.info(str_answer)
 
-                logger.info('------ end answers ----------')
+                logger.info('------ end bad answers ----------')
 
             c_1 += 1 if max_r == max_n else 0
             position = r[max_r] - r[max_n] + 1
