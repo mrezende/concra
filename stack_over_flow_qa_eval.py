@@ -438,6 +438,7 @@ class Evaluator:
                     answer = answers[sim_index][0]
                     print('answer ----: ' + str(answer))
                     for good_answer in d['good_answers']:
+                        print(good_answer)
                         if np.array_equal(answer, good_answer):
                             is_good_answer = True
                             break
