@@ -411,7 +411,6 @@ class Evaluator:
             max_n = np.argmax(sims[:n_good])
 
             r = rankdata(sims, method='max')
-            sims_index_sorted = np.argsort(sims)[::-1][:len(sims)]
 
             if verbose:
                 min_r = np.argmin(sims)
@@ -435,24 +434,12 @@ class Evaluator:
 
                 logger.info('------ begin bad answers ----------')
                 print(sims_index_sorted)
-                for sim_index in sims_index_sorted:
-                    is_good_answer = False
-                    print(sim_index)
-                    print(answers_original)
-                    answer = answers_original[sim_index]
-                    print('answer ----: ' + str(answer))
-                    for good_answer in d['good_answers']:
-                        print(good_answer)
-                        if np.array_equal(answer, good_answer):
-                            is_good_answer = True
-                            break
-                    print('is_good_answer----: ' + str(is_good_answer))
-                    if is_good_answer == False:
-                        question_id = self.find_question_id(answer)
-                        answer_index = answers_original.index(answer)
-                        answer_rank = r[answer_index]
-                        str_answer = 'Question Id (sof): ' + str(question_id) + ' - Rank: ' + answer_rank + ' - ' + ' '.join(self.revert(answer))
-                        logger.info(str_answer)
+                for answer in bad_answers:
+                    question_id = self.find_question_id(answer)
+                    answer_index = answers_original.index(answer)
+                    answer_rank = r[answer_index]
+                    str_answer = 'Question Id (sof): ' + str(question_id) + ' - Rank: ' + answer_rank + ' - ' + ' '.join(self.revert(answer))
+                    logger.info(str_answer)
 
                 logger.info('------ end bad answers ----------')
 
