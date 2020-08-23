@@ -438,11 +438,17 @@ class Evaluator:
                 
                 for sim_index in sims_index_sorted:
                     answer = answers_original[sim_index]
-                    question_id = self.find_question_id(answer)
-                    answer_index = answers_original.index(answer)
-                    answer_rank = r[answer_index]
-                    str_answer = 'Question Id (sof): ' + str(question_id) + ' - Rank: ' + str(answer_rank) + ' - ' + ' '.join(self.revert(answer))
-                    logger.info(str_answer)
+                    is_good_answer = False
+                    for good_answer in d['good_answers']:
+                        if np.array_equal(good_answer, answer):
+                            is_good_answer =  True
+                            break
+                    if is_good_answer == False:
+                        question_id = self.find_question_id(answer)
+                        answer_index = answers_original.index(answer)
+                        answer_rank = r[answer_index]
+                        str_answer = 'Question Id (sof): ' + str(question_id) + ' - Rank: ' + str(answer_rank) + ' - ' + ' '.join(self.revert(answer))
+                        logger.info(str_answer)
 
                 logger.info('------ end answers ----------')
 
@@ -459,7 +465,6 @@ class Evaluator:
 
         return top1, mrr, positions
     def find_question_id(self, answer):
-        print(self.answers)
         index = self.answers.index(answer)
         question_id = self.answers_index[index]
         return question_id
