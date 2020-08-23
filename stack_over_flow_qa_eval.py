@@ -411,6 +411,7 @@ class Evaluator:
             max_n = np.argmax(sims[:n_good])
 
             r = rankdata(sims, method='max')
+            print(sims)
 
             if verbose:
                 min_r = np.argmin(sims)
@@ -433,7 +434,7 @@ class Evaluator:
                 logger.info('------ end correct answer ----------')
 
                 logger.info('------ begin bad answers ----------')
-                print(sims_index_sorted)
+                
                 for answer in bad_answers:
                     question_id = self.find_question_id(answer)
                     answer_index = answers_original.index(answer)
