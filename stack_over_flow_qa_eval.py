@@ -411,7 +411,8 @@ class Evaluator:
             max_n = np.argmax(sims[:n_good])
 
             r = rankdata(sims, method='max')
-            print(sims)
+            sims_flattened = sims.flatten()
+            sims_index_sorted = np.argsort(sims_flattened)[::-1][:len(sims_flattened)]
 
             if verbose:
                 min_r = np.argmin(sims)
@@ -433,16 +434,17 @@ class Evaluator:
 
                 logger.info('------ end correct answer ----------')
 
-                logger.info('------ begin bad answers ----------')
+                logger.info('------ begin answers ----------')
                 
-                for answer in bad_answers:
+                for sim_index in sims_index_sorted:
+                    answer = answers_original[sim_index]
                     question_id = self.find_question_id(answer)
                     answer_index = answers_original.index(answer)
                     answer_rank = r[answer_index]
-                    str_answer = 'Question Id (sof): ' + str(question_id) + ' - Rank: ' + answer_rank + ' - ' + ' '.join(self.revert(answer))
+                    str_answer = 'Question Id (sof): ' + str(question_id) + ' - Rank: ' + str(answer_rank) + ' - ' + ' '.join(self.revert(answer))
                     logger.info(str_answer)
 
-                logger.info('------ end bad answers ----------')
+                logger.info('------ end answers ----------')
 
             c_1 += 1 if max_r == max_n else 0
             position = r[max_r] - r[max_n] + 1
