@@ -1,62 +1,51 @@
-> 📋A template README.md for code accompanying a Machine Learning paper
+# CoNCRA: A Convolutional Neural Network Code Retrieval Approach
 
-# My Paper Title
+This repository is the official implementation of [CoNCRA: A Convolutional Neural Network Code Retrieval Approach](https://arxiv.org/abs/2030.12345). Our source code its an adaptation of: https://github.com/codekansas/keras-language-modeling
 
-This repository is the official implementation of [My Paper Title](https://arxiv.org/abs/2030.12345). 
+We propose a technique for semantic code search: A Convolutional Neural Network approach to code retrieval (CoNCRA). Our technique aims to find the code snippet that most closely matches the developer's intent, expressed in natural language. We evaluated our approach's efficacy on a dataset composed of questions and code snippets collected from Stack Overflow. Our preliminary results showed that our technique, which prioritizes local interactions (words nearby), improved the state-of-the-art (SOTA) by 5% on average, retrieving the most relevant code snippets in the top 3 (three) positions by almost 80% of the time.
 
-> 📋Optional: include a graphic explaining your approach/main result, bibtex entry, link to demos, blog posts and tutorials
+![Illustration of the joint embedding technique for code retrieval.](/images/joint-embedding-article.png)
 
 ## Requirements
 
-To install requirements:
+We ran our experiments at Google colab. The notebooks and source code to run our models is available at **notebooks** folder.
 
-```setup
-pip install -r requirements.txt
-```
 
-> 📋Describe how to set up the environment, e.g. pip/conda/docker commands, download datasets, etc...
 
 ## Training
 
-To train the model(s) in the paper, run this command:
+To train the model(s) in the paper, execute the following notebooks:
 
-```train
-python train.py --input-data <path_to_data> --alpha 10 --beta 20
-```
+* train_cnn_stack_over_flow_qa.ipynb
+* train_shared_cnn_stack_over_flow_qa.ipynb
+* train_unif_embedding_stack_over_flow_qa.ipynb
 
-> 📋Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
 
 ## Evaluation
 
-To evaluate my model on ImageNet, run:
+To evaluate my model on [StaQC Dataset](https://github.com/LittleYUYU/StackOverflow-Question-Code-Dataset), run the following notebooks:
 
-```eval
-python eval.py --model-file mymodel.pth --benchmark imagenet
-```
+* evaluate_best_stack_over_flow_qa.ipynb
+* evaluate_stack_over_flow_qa.ipynb
 
-> 📋Describe how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
+
 
 ## Pre-trained Models
 
 You can download pretrained models here:
 
-- [My awesome model](https://drive.google.com/mymodel.pth) trained on ImageNet using parameters x,y,z. 
+- [CoNCRA Model](https://github.com/mrezende/concra/blob/master/models/weights/weights_epoch_ca8cf5_SharedConvolutionModelWithBatchNormalization.h5) trained on StaQC Dataset using margin 0.05, 4000 filters and kernel size 2. 
 
-> 📋Give a link to where/how the pretrained models can be downloaded and how they were trained (if applicable).  Alternatively you can have an additional column in your results table with a link to the models.
+
 
 ## Results
 
 Our model achieves the following performance on :
 
-### [Image Classification on ImageNet](https://paperswithcode.com/sota/image-classification-on-imagenet)
+### [StaQC Dataset](https://github.com/LittleYUYU/StackOverflow-Question-Code-Dataset)
 
 | Model name         | Top 1 Accuracy  | Top 5 Accuracy |
 | ------------------ |---------------- | -------------- |
-| My awesome model   |     85%         |      95%       |
-
-> 📋Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
+| CoNCRA Model       |     85%         |      95%       |
 
 
-## Contributing
-
-> 📋Pick a licence and describe how to contribute to your code repository. 
