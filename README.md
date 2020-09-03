@@ -4,7 +4,7 @@ This repository is the official implementation of [CoNCRA: A Convolutional Neura
 
 We propose a technique for semantic code search: A Convolutional Neural Network approach to code retrieval (CoNCRA). Our technique aims to find the code snippet that most closely matches the developer's intent, expressed in natural language. We evaluated our approach's efficacy on a dataset composed of questions and code snippets collected from Stack Overflow. Our preliminary results showed that our technique, which prioritizes local interactions (words nearby), improved the state-of-the-art (SOTA) by 5% on average, retrieving the most relevant code snippets in the top 3 (three) positions by almost 80% of the time.
 
-![Illustration of the joint embedding technique for code retrieval.](/images/joint-embedding-article.png)
+![Illustration of the joint embedding technique for code retrieval.](images/joint-embedding-article.png)
 
 ## Requirements
 
@@ -44,8 +44,10 @@ Our model achieves the following performance on :
 
 ### [StaQC Dataset](https://github.com/LittleYUYU/StackOverflow-Question-Code-Dataset)
 
-| Model name         | Top 1 Accuracy  | Top 5 Accuracy |
+| Model name         |  MRR  | Top 1 Accuracy |
 | ------------------ |---------------- | -------------- |
-| CoNCRA Model       |     85%         |      95%       |
+| CoNCRA Model       |     0.701         |      57.7%       |
+| [Unif](https://arxiv.org/abs/1905.03813)       |     0.675         |      53.9%       |
+| Embedding Model       |     0.637         |      49.3%       |
 
 
