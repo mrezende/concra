@@ -1,14 +1,16 @@
 # CoNCRA: A Convolutional Neural Network Code Retrieval Approach
 
-This repository is the official implementation of [CoNCRA: A Convolutional Neural Network Code Retrieval Approach](https://arxiv.org/abs/2030.12345). Our source code its an adaptation of: https://github.com/codekansas/keras-language-modeling
+This repository is the official implementation of [CoNCRA: A Convolutional Neural Network Code Retrieval Approach](https://arxiv.org/abs/2030.12345). 
+
+Our source code its an adaptation of: https://github.com/codekansas/keras-language-modeling
 
 We propose a technique for semantic code search: A Convolutional Neural Network approach to code retrieval (CoNCRA). Our technique aims to find the code snippet that most closely matches the developer's intent, expressed in natural language. We evaluated our approach's efficacy on a dataset composed of questions and code snippets collected from Stack Overflow. Our preliminary results showed that our technique, which prioritizes local interactions (words nearby), improved the state-of-the-art (SOTA) by 5% on average, retrieving the most relevant code snippets in the top 3 (three) positions by almost 80% of the time.
 
-![Illustration of the joint embedding technique for code retrieval.](images/joint-embedding-article.png)
+![Illustration of the joint embedding technique for code retrieval.](https://github.com/mrezende/concra/blob/master/images/joint_embedding-article.png)
 
 ## Requirements
 
-We ran our experiments at Google colab. The notebooks and source code to run our models is available at **notebooks** folder.
+We ran our experiments at Google colab. The notebooks and source code to run our models is available at [**notebooks**](https://github.com/mrezende/concra/tree/master/notebooks) folder.
 
 
 
