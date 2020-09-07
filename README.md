@@ -1,6 +1,6 @@
 # CoNCRA: A Convolutional Neural Network Code Retrieval Approach
 
-This repository is the official implementation of [CoNCRA: A Convolutional Neural Network Code Retrieval Approach](https://arxiv.org/abs/2030.12345). 
+This repository is the official implementation of [CoNCRA: A Convolutional Neural Network Code Retrieval Approach](https://arxiv.org/abs/2009.01959). 
 
 Our source code its an adaptation of: https://github.com/codekansas/keras-language-modeling
 
