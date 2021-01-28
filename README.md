@@ -52,4 +52,25 @@ Our model achieves the following performance on :
 | [Unif](https://arxiv.org/abs/1905.03813)       |     0.675         |      53.9%       |
 | Embedding Model       |     0.637         |      49.3%       |
 
+## Cite
 
+If you are using our code, please cite the following paper:
+
+```
+@inproceedings{de-rezende-martins-concra-2020,
+author = {de Rezende Martins, Marcelo and Gerosa, Marco Aur\'{e}lio},
+title = {CoNCRA: A Convolutional Neural Networks Code Retrieval Approach},
+year = {2020},
+isbn = {9781450387538},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3422392.3422462},
+doi = {10.1145/3422392.3422462},
+booktitle = {Proceedings of the 34th Brazilian Symposium on Software Engineering},
+pages = {526–531},
+numpages = {6},
+keywords = {joint embedding, neural networks, code search},
+location = {Natal, Brazil},
+series = {SBES '20}
+}
+```
